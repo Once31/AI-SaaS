@@ -28,7 +28,7 @@ const ConversationPage = () => {
       prompt: "",
     },
   });
-
+  console.log("render");
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: formInfer) => {
