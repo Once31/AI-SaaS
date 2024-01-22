@@ -36,3 +36,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 # shadcn setup
 
 https://ui.shadcn.com/docs/installation/next
+
+# docker run --rm -it stripe/stripe-cli listen --api-key api_key

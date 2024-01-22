@@ -30,9 +30,12 @@ import {
 } from "@/components/ui/select";
 import { Card, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
+import { useProModal } from "@/hooks/use-pro-model";
+import toast from "react-hot-toast";
 
 const ConversationPage = () => {
   const router = useRouter();
+  const { onOpen } = useProModal();
   const [images, setImages] = useState<string[]>([]);
 
   const form = useForm<formInfer>({
@@ -57,6 +60,11 @@ const ConversationPage = () => {
       form.reset();
     } catch (error: any) {
       // TODO Open Pro Modal
+      if (error?.response?.status === 403) {
+        onOpen();
+      } else {
+        toast.error("Something went wrong");
+      }
       console.log(error);
     } finally {
       router.refresh();

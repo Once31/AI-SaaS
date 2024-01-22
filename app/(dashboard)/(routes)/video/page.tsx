@@ -14,10 +14,13 @@ import { useState } from "react";
 import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 import Empty from "@/components/empty";
 import { Loader } from "@/components/loader";
+import { useProModal } from "@/hooks/use-pro-model";
+import toast from "react-hot-toast";
 
 const VideoPage = () => {
   const router = useRouter();
   const [video, setVideo] = useState<string>();
+  const { onOpen } = useProModal();
 
   const form = useForm<formInfer>({
     resolver: zodResolver(formSchema),
@@ -41,6 +44,11 @@ const VideoPage = () => {
       form.reset();
     } catch (error: any) {
       // TODO Open Pro Modal
+      if (error?.response?.status === 403) {
+        onOpen();
+      } else {
+        toast.error("Something went wrong");
+      }
       console.log(error);
     } finally {
       router.refresh();

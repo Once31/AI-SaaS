@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { UserAvatar } from "@/components/user-avatar";
+import { useProModal } from "@/hooks/use-pro-model";
 import { cn } from "@/lib/utils";
 import { formInfer, formSchema } from "@/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,10 +18,12 @@ import { useRouter } from "next/navigation";
 import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import ReactMarkdown from "react-markdown";
 
 const CodeGenerationPage = () => {
   const router = useRouter();
+  const { onOpen } = useProModal();
   const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([]);
 
   const form = useForm<formInfer>({
@@ -45,7 +48,12 @@ const CodeGenerationPage = () => {
       setMessages((current) => [...current, userMessage, response.data]);
 
       form.reset();
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status === 403) {
+        onOpen();
+      } else {
+        toast.error("Something went wrong");
+      }
       console.log(error);
     } finally {
       router.refresh();
