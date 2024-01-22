@@ -3,12 +3,13 @@ import MobileSidebar from "./mobile-sidebar";
 
 interface NavbarProps {
   apiLimitCount: number;
+  isPro: boolean;
 }
 
-const Navbar = ({ apiLimitCount }: NavbarProps) => {
+const Navbar = ({ apiLimitCount, isPro }: NavbarProps) => {
   return (
     <div className="flex items-center p-4">
-      <MobileSidebar apiLimitCount={apiLimitCount} />
+      <MobileSidebar apiLimitCount={apiLimitCount} isPro={isPro} />
       <div className="flex justify-end flex-1">
         <UserButton afterSignOutUrl="/" />
       </div>
